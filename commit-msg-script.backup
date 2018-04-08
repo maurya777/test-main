@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+#!/usr/bin/env bash
+
+#git config credential.helper store
+REPOSRC="https://github.com/maurya777/test-sub.git"
+LOCALREPO="test-sub"
+ORIGREPOLOC=$PWD
+
+# printf "${GIT_DIR}\n"
+# printf "${GIT_WORK_TREE}\n"
+# exit 1
+
+# printf "cd /tmp\n";
+# cd /tmp
+
+printf "rm -rf /tmp/${LOCALREPO}\n";
+rm -rf /tmp/${LOCALREPO}
+printf "git clone ${REPOSRC} /tmp/${LOCALREPO}\n";
+git clone ${REPOSRC} /tmp/${LOCALREPO}
+# printf "cd ${LOCALREPO}\n";
+# cd ${LOCALREPO}
+# printf "git pull\n";
+# git pull
+
+#here when I navigate to /tmp/<LOCALREPO> all files are listed as DELETED
+printf "git --work-tree ${ORIGREPOLOC} --git-dir ${ORIGREPOLOC}/.git status\n";
+git --work-tree ${ORIGREPOLOC} --git-dir ${ORIGREPOLOC}/.git status
+
+printf "git --work-tree ${ORIGREPOLOC} --git-dir ${ORIGREPOLOC}/.git diff --cached --name-status\n";
+git --work-tree ${ORIGREPOLOC} --git-dir ${ORIGREPOLOC}./git diff --cached --name-status | while read st file; do
+  printf "cp -R ${ORIGREPOLOC}/${file} /tmp/{$LOCALREPO}/${file}\n";
+  cp -R ${ORIGREPOLOC}/$file /tmp/{$LOCALREPO}/$file
+  printf "file == ${file} and status == ${st}\n";
+  if [ "$st" == "A" ]; then
+    printf "git add ${file}\n";
+    git --work-tree ${LOCALREPO} --git-dir /tmp/{$LOCALREPO}/.git add "$file"
+  fi
+done
+exit 1
+printf "git commit -m ${COMMIT_MSG}\n";
+git --work-tree ${LOCALREPO} --git-dir /tmp/{$LOCALREPO}/.git commit -m "$COMMIT_MSG"
+printf "git push\n";
+git --work-tree ${LOCALREPO} --git-dir /tmp/{$LOCALREPO}/.git push

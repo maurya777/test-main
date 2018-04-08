@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+#!/usr/bin/env bash
+
+#git config credential.helper store
+REPOSRC="https://github.com/maurya777/test-sub.git"
+LOCALREPO="test-sub"
+ORIGREPOLOC=$PWD
+COMMIT_MSG=$1
+
+printf "${ORIGREPOLOC}";
+
+# printf "${GIT_DIR}\n"
+# printf "${GIT_WORK_TREE}\n"
+# exit 1
+
+printf "cd /tmp\n";
+cd /tmp
+
+printf "rm -rf ${LOCALREPO}\n";
+rm -rf ${LOCALREPO}
+printf "git clone ${REPOSRC} ${LOCALREPO}\n";
+git clone ${REPOSRC} ${LOCALREPO}
+# printf "cd ${LOCALREPO}\n";
+# cd ${LOCALREPO}
+# printf "git pull\n";
+# git pull
+
+cd ${ORIGREPOLOC}
+#here when I navigate to /tmp/<LOCALREPO> all files are listed as DELETED
+printf "git status\n";
+git status
+
+printf "git diff --cached --name-status\n";
+git diff --cached --name-status | while read st file; do
+  printf "cp -R ${ORIGREPOLOC}/${file} /tmp/${file}\n";
+  cp -R ${ORIGREPOLOC}/$file /tmp/$file
+done
+
+cd /tmp/${LOCALREPO}
+printf "git add .\n";
+git add .
+printf "git commit -m ${COMMIT_MSG}\n";
+git commit -m "$COMMIT_MSG"
+printf "git push\n";
+git push

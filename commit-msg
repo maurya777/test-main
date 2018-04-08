@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+#!/usr/bin/env bash
+COMMIT_MSG=$(cat "${1}")
+sh $PWD/.git/hooks/commit-msg-script ${COMMIT_MSG}
