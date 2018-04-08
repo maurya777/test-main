@@ -33,7 +33,7 @@ git status
 
 printf "git diff --cached --name-status\n";
 git diff --cached --name-status | while read st file; do
-  printf "cp -R ${ORIGREPOLOC}/${file} /tmp/${file}\n";
+  printf "cp -R ${ORIGREPOLOC}/${file} /tmp/${LOCALREPO}/${file}\n";
   cp -R ${ORIGREPOLOC}/$file /tmp/$file
 done
 
