@@ -21,21 +21,8 @@ printf "rm -rf ${LOCALREPO}\n";
 rm -rf ${LOCALREPO}
 printf "git clone ${REPOSRC} ${LOCALREPO}\n";
 git clone ${REPOSRC} ${LOCALREPO}
-# printf "cd ${LOCALREPO}\n";
-# cd ${LOCALREPO}
-# printf "git pull\n";
-# git pull
 
-cd ${ORIGREPOLOC}
-#here when I navigate to /tmp/<LOCALREPO> all files are listed as DELETED
-printf "git status\n";
-git status
-
-printf "git diff --cached --name-status\n";
-git diff --cached --name-status | while read st file; do
-  printf "cp -R ${ORIGREPOLOC}/${file} /tmp/${LOCALREPO}/${file}\n";
-  cp -R ${ORIGREPOLOC}/$file /tmp/$file
-done
+cp -R ${ORIGREPOLOC}/${LOCALREPO}/* /tmp/${LOCALREPO}/
 
 cd /tmp/${LOCALREPO}
 printf "git add .\n";
